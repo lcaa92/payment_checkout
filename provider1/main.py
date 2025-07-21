@@ -1,11 +1,36 @@
 import uuid
-from fastapi import FastAPI
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, status
+
 from form_input import ChargeRequest, RefundRequest
-from models import ChargeResponse, RefundResponse
-app = FastAPI()
+from models import Charge
+from response import ChargeResponse, RefundResponse
+from sqlmodel import SQLModel, create_engine, Session
+# app = FastAPI()
 
 
-@app.post("/charges", response_model=ChargeResponse)
+sqlite_file_name = "database.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+connect_args = {"check_same_thread": False}
+engine = create_engine(sqlite_url, connect_args=connect_args)
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_db_and_tables()
+    yield
+
+app = FastAPI(lifespan=lifespan)
+
+@app.post("/charges", response_model=ChargeResponse, status_code=status.HTTP_201_CREATED)
 def charges(input: ChargeRequest):
     # ToDo: Implement charge logic
     return ChargeResponse(
@@ -17,7 +42,7 @@ def charges(input: ChargeRequest):
         currency=input.currency,
         description=input.description,
         paymentMethod=input.paymentMethod.type,
-        cardId=uuid.uuid4() if input.paymentMethod.type == "card" else None
+        cardId=uuid.uuid4()
     )
 
 
