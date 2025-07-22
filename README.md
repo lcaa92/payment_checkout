@@ -1,4 +1,4 @@
-# Payment Checlout
+# Payment Checkout
 
 ## Python Virtual Environments:
 
@@ -52,5 +52,5 @@ ToDo list:
 
 ### Provider 2
 - [X] Basic Structure
-- [ ] Linter
+- [X] Linter
 - [ ] Tests
