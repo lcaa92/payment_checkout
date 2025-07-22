@@ -1,6 +1,7 @@
 from typing import Dict
 from integrations.interfaces import ProviderIntegrationBase
 from .provider1 import Provider1Integration
+from .provider2 import Provider2Integration
 
 class PaymentProcessException(Exception):
     """Custom exception for payment processing errors."""
@@ -13,6 +14,7 @@ class PaymentOrchestrator:
 
     _PROVIDERS_ORDER: Dict[str, ProviderIntegrationBase] = {
         "provider1": Provider1Integration,
+        "provider2": Provider2Integration,
     }
 
     def process_payment(self, payment_data: dict) -> dict:
