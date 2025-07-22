@@ -1,0 +1,54 @@
+services:
+  # FastAPI - Provider 1
+  provider1:
+    build:
+      context: ./provider1
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: postgresql://user1:password123@db1:5432/provider1
+    depends_on:
+      - db1
+    networks:
+      - app_network
+
+  # FastAPI - Provider 2
+  provider2:
+    build:
+      context: ./provider2
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    environment:
+      DATABASE_URL: postgresql://user1:password123@db1:5432/provider2
+    depends_on:
+      - db1 # Ensure db1 is up before starting app2
+    networks:
+      - app_network
+
+  # Single PostgreSQL Database for all apps
+  db1:
+    image: postgres:16-alpine
+    restart: always 
+    environment:
+      POSTGRES_DB: db1
+      POSTGRES_USER: user1
+      POSTGRES_PASSWORD: password123
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data1:/var/lib/postgresql/data # Persist data for db1
+      # Mount the local 'db_init' directory into the PostgreSQL initialization directory
+      - ./db_init:/docker-entrypoint-initdb.d
+    networks:
+      - app_network
+
+# Define a shared network for all services to communicate
+networks:
+  app_network:
+    driver: bridge
+
+# Define named volumes for persistent database data
+volumes:
+  db_data1:
