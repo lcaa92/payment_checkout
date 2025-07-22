@@ -12,7 +12,7 @@ CREATE TABLE payments (
     amount INT NOT NULL CHECK (amount >= 0),
     currency VARCHAR(3) NOT NULL CHECK (currency IN ('USD', 'EUR', 'BRL')),
     status VARCHAR(20) NOT NULL CHECK (status IN ('pending', 'completed', 'failed')),
-    provider VARCHAR(20) NOT NULL CHECK (provider IN ('provider1', 'provider2')),
+    provider VARCHAR(20) CHECK (provider IN ('provider1', 'provider2')),
     provider_id UUID NOT NULL,
     provider_details VARCHAR,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
