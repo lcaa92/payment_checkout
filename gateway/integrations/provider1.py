@@ -4,6 +4,7 @@ from .interfaces import ProviderIntegrationBase
 from fastapi import status
 from models import PaymentStatus
 
+
 class Provider1Integration(ProviderIntegrationBase):
 
     _BASE_URL = os.getenv("PROVIDER1_URL", "http://localhost:8001")

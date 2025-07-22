@@ -3,12 +3,14 @@ from integrations.interfaces import ProviderIntegrationBase
 from .provider1 import Provider1Integration
 from .provider2 import Provider2Integration
 
+
 class PaymentProcessException(Exception):
     """Custom exception for payment processing errors."""
 
     def __init__(self, errors: list, message: str):
         super().__init__(message)
         self.errors = errors
+
 
 class PaymentOrchestrator:
 

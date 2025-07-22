@@ -42,7 +42,7 @@ ToDo list:
 ### Gateway
 - [X] Basic Structure
 - [X] Integration with providers
-- [ ] Linter
+- [X] Linter
 - [ ] Tests
 
 ### Provider 1
