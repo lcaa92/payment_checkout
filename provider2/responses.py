@@ -9,7 +9,6 @@ class TransactionResponse(BaseModel):
     amount: int
     currency: str 
     statementDescriptor: str
-    paymentType: str 
     cardId: uuid.UUID
     
 class VoidResponse(BaseModel):

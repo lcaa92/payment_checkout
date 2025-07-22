@@ -1,6 +1,22 @@
 import uuid
 import datetime
+import random
+from enum import Enum
 from sqlmodel import Field, SQLModel
+
+class PaymentMethodCurrency(str, Enum):
+    USD = "USD"
+    EUR = "EUR"
+    BRL = "BRL"
+
+class TransactionStatus(str, Enum):
+    paid = "paid"
+    failed = "failed"
+    voided = "voided"
+
+    @classmethod
+    def get_random_status(cls):
+        return random.choice(list(cls))
 
 class CardDetails(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
@@ -8,29 +24,19 @@ class CardDetails(SQLModel, table=True):
     holder: str = Field(..., max_length=100)
     cvv: str = Field(..., max_length=4)
     expiration: str = Field(..., max_length=5)
-    installmentNumber: int = Field(..., ge=1, le=12)
-
-class PaymentType(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    type: str = Field(include=["card"], max_length=50) 
-    card: uuid.UUID = Field(default=None, foreign_key="carddetails.id")
+    installment_number: int = Field(..., ge=1, le=12)
+    transaction_id: uuid.UUID = Field(default=None, foreign_key="transaction.id")
 
 class Transaction(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    date: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
-    status: str = Field(include=["paid", "failed", "voided"])
-    originalAmount: int = Field(..., ge=0)
+    created_at: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc), alias="created_at")
+    status: TransactionStatus = Field(description="Transaction status")
+    original_amount: int = Field(..., ge=0)
     amount: int = Field(..., ge=0)
-    currency: str = Field(..., max_length=3, include=["USD", "EUR", "BRL"]) 
-    statementDescriptor: str = Field(..., max_length=255)
-    paymenType: uuid.UUID = Field(default=None, foreign_key="paymenttype.id")
+    currency: PaymentMethodCurrency = Field(..., max_length=3, description="Currency must be a 3-letter ISO code") 
+    statement_descriptor: str = Field(..., max_length=255)
 
 class Void(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    date: str = Field(default_factory=datetime.datetime.now(datetime.timezone.utc))
-    status: str = Field(include=["paid", "failed", "voided"])
-    original_amount: int = Field(..., ge=0)
     amount: int = Field(..., ge=0)
-    currency: str = Field(..., max_length=3, include=["USD", "EUR", "BRL"]) 
-    statementDescriptor: str = Field(..., max_length=255)
-    paymenType: str = Field(default=None, foreign_key="paymenttype.id")
+    transaction_id: uuid.UUID = Field(default=None, foreign_key="transaction.id")
