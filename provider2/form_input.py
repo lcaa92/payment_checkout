@@ -1,23 +1,24 @@
-import uuid
 from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-class PaymentMethod(BaseModel):
-    type: str  # e.g., "card", "bank_transfer", etc.
-    card: 'CardDetails' = None  # Optional, only if type is "card"
 
 class CardDetails(BaseModel):
-    number: str
-    holderName: str
-    cvv: str
-    expirationDate: str
-    installmentNumber: int
+    number: str = Field(..., min_length=16, max_length=16, description="Card number must be 16 digits")
+    holder: str = Field(..., max_length=100, description="Holder must be up to 100 characters")
+    cvv: str = Field(pattern=r"^\d{3}$", description="CVV must be 3 or 4 digits")
+    expiration: str = Field(..., pattern=r"^(0[1-9]|1[0-2])/\d{2}$", description="Expiration date must be in MM/YY format")
+    installmentNumber: int = Field(..., ge=1, le=12, description="installmentNumber must be between 1 and 12")
+
+class PaymentType(BaseModel):
+    type: str = Field(..., include=["card"], max_length=50, description="Payment type must be 'card'")
+    card: CardDetails = Field(..., description="Card details for the payment method") 
 
 class TransactionRequest(BaseModel):
-    amount: int
-    currency: str
-    statementDescriptor: str
-    paymentType: PaymentMethod
+    amount: int = Field(..., ge=0, description="Amount must be a positive integer")
+    currency: str = Field(..., max_length=3, include=["USD", "EUR", "BRL"], description="Currency must be a 3-letter ISO code")
+    statementDescriptor: str = Field(..., max_length=255)
+    paymentType: PaymentType = Field(..., description="Payment method details")
     
 
 class VoidRequest(BaseModel):
-    amount: int
+    amount: int = Field(..., ge=0, description="Amount must be a positive integer")
