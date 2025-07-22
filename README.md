@@ -47,7 +47,7 @@ ToDo list:
 
 ### Provider 1
 - [X] Basic Structure
-- [ ] Linter
+- [X] Linter
 - [ ] Tests
 
 ### Provider 2

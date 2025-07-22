@@ -1,42 +1,39 @@
 import uuid
 import os
-import datetime
 import random
-from contextlib import asynccontextmanager
 from fastapi import FastAPI, status, Depends, HTTPException
 from typing import Annotated
 from form_input import ChargeRequest, RefundRequest
 from models import Charge, CardDetails, PaymentMethod
-from response import ChargeResponse, RefundResponse
-from sqlmodel import SQLModel, create_engine, Session, select
+from response import ChargeResponse
+from sqlmodel import create_engine, Session, select
 from dotenv import load_dotenv
 
 load_dotenv()
 
 engine = create_engine(os.getenv("DATABASE_URL"))
 
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
-
 
 def get_session():
     with Session(engine) as session:
         yield session
 
+
 SessionDep = Annotated[Session, Depends(get_session)]
 
 app = FastAPI()
+
 
 @app.post("/charges", response_model=ChargeResponse, status_code=status.HTTP_201_CREATED)
 def charges(input: ChargeRequest, session: SessionDep):
 
     charge = Charge(
         id=uuid.uuid4(),
-        status=random.choice(["authorized", "refunded", "failed"]),  # Example status
+        status=random.choice(["authorized", "refunded", "failed"]),
         original_amount=input.amount,
         current_amount=input.amount,
         currency=input.currency,
-        description=input.description,      
+        description=input.description,
     )
     session.add(charge)
     session.commit()
@@ -67,7 +64,7 @@ def charges(input: ChargeRequest, session: SessionDep):
         id=charge.id,
         createdAt=charge.created_at.isoformat(),
         status=charge.status,
-        originalAmount=charge.original_amount, 
+        originalAmount=charge.original_amount,
         currentAmount=charge.current_amount,
         currency=charge.currency,
         description=charge.description,
@@ -75,14 +72,15 @@ def charges(input: ChargeRequest, session: SessionDep):
         cardId=card_details.id
     )
 
+
 @app.get("/charges/{charge_id}", response_model=ChargeResponse)
 def charges_detail(charge_id: str, session: SessionDep):
     charge = session.get(Charge, uuid.UUID(charge_id))
     if not charge:
         raise HTTPException(status_code=404, detail="Charge not found")
-    
+
     payment_method = session.exec(select(PaymentMethod).where(PaymentMethod.charge_id == charge.id)).first()
-    card_details  = session.exec(select(CardDetails).where(CardDetails.paymentmethod_id == payment_method.id)).first()
+    card_details = session.exec(select(CardDetails).where(CardDetails.paymentmethod_id == payment_method.id)).first()
 
     return ChargeResponse(
         id=charge.id,
