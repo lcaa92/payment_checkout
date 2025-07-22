@@ -7,6 +7,7 @@ from form_input import PaymentRequest
 from responses import PaymentResponse 
 from models import Payments, PaymentStatus
 from sqlmodel import create_engine, Session
+from services import paymentSrv
 
 load_dotenv()
 
@@ -17,8 +18,6 @@ def get_session():
         yield session
 
 SessionDep = Annotated[Session, Depends(get_session)]
-
-app = FastAPI()
 
 app = FastAPI()
 
@@ -35,6 +34,12 @@ def payment(input: PaymentRequest, session: SessionDep):
     session.add(payment)
     session.commit()
     session.refresh(payment)
+
+    paymentSrv.process_payment(
+        input.model_dump(), 
+        payment, 
+        session
+    )
 
     return PaymentResponse(
         id=payment.id,

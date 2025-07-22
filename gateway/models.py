@@ -24,4 +24,3 @@ class Payments(SQLModel, table=True):
     provider_id: uuid.UUID = Field(default_factory=uuid.uuid4, description="Unique identifier for the payment in the provider's system", alias="providerId")
     provider_details: str = Field(nullable=True, description="Details specific to the payment provider")
     created_at: str = Field(..., default_factory=lambda: datetime.datetime.now(datetime.timezone.utc), description="Creation date in ISO 8601 format", alias="createdAt")
-    
