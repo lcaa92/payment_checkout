@@ -1,42 +1,65 @@
 import uuid
-from fastapi import FastAPI
-from form_input import Payment  
-from models import PaymentResponse 
+import os
+from typing import Annotated
+from dotenv import load_dotenv
+from fastapi import FastAPI, Depends, status, HTTPException
+from form_input import PaymentRequest  
+from responses import PaymentResponse 
+from models import Payments, PaymentStatus
+from sqlmodel import create_engine, Session
+
+load_dotenv()
+
+engine = create_engine(os.getenv("DATABASE_URL"))
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+SessionDep = Annotated[Session, Depends(get_session)]
+
+app = FastAPI()
 
 app = FastAPI()
 
 
 @app.post("/payments", response_model=PaymentResponse)
-def payment(input: Payment):
-    return PaymentResponse(
-        id=uuid.uuid4(),
-        createdAt="2023-10-01T12:00:00Z",
-        status="authorized",
-        originalAmount=input.amount,
-        currentAmount=input.amount,
+def payment(input: PaymentRequest, session: SessionDep):
+    payment = Payments(
+        provider="provider1", 
+        provider_id=uuid.uuid4(),
+        amount=input.amount,
         currency=input.currency,
-        description=input.description,
-        paymentMethod=input.paymentMethod.type,
-        cardId=uuid.uuid4() if input.paymentMethod.type == "card" else None
+        status=PaymentStatus.pending,
+    )
+    session.add(payment)
+    session.commit()
+    session.refresh(payment)
+
+    return PaymentResponse(
+        id=payment.id,
+        createdAt=payment.created_at.isoformat(),
+        status=payment.status.value,
+        amount=payment.amount,
+        currency=payment.currency.value
     )
 
 
 @app.get("/payments/{payment_id}", response_model=PaymentResponse)
-def payment_detail(payment_id: str):
+def payment_detail(payment_id: uuid.UUID, session: SessionDep):
+    payment = session.get(Payments, payment_id)
+    if not payment:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Payment not found")
+    
     return PaymentResponse(
-        id=uuid.uuid4(),
-        createdAt="2023-10-01T12:00:00Z",
-        status="authorized",
-        originalAmount=input.amount,
-        currentAmount=input.amount,
-        currency=input.currency,
-        description=input.description,
-        paymentMethod=input.paymentMethod.type,
-        cardId=uuid.uuid4() if input.paymentMethod.type == "card" else None
+        id=payment.id,
+        createdAt=payment.created_at.isoformat(),
+        status=payment.status.value,
+        amount=payment.amount,
+        currency=payment.currency.value
     )
-
 
 
 @app.post("/refunds")
 def refunds():
-    return {"Hello": "World"}
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Refunds not implemented yet")
