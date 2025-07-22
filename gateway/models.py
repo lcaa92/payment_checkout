@@ -13,6 +13,7 @@ class PaymentStatus(str, Enum):
     pending = "pending"
     completed = "completed"
     failed = "failed"
+    cancelled = "cancelled"
 
 
 class Payments(SQLModel, table=True):
