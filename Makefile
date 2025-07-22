@@ -12,6 +12,17 @@ run_provider1: # Run the provider1 API.
 run_provider2: # Run the provider2 API.
 	cd provider2 && uv run fastapi dev main.py --port 8002
 
+
+# Linter
+linter_gateway: # Run the gateway API.
+	cd gateway && uv run flake8 .
+
+linter_provider1: # Run the gateway API.
+	cd provider1 && uv run flake8 .
+
+linter_provider2: # Run the gateway API.
+	cd provider2 && uv run flake8 .
+
 docker_compose_up: # Start all services using Docker Compose.
 	docker compose up -d
 
