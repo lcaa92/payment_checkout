@@ -28,9 +28,11 @@ class PaymentOrchestrator:
         for provider_name, provider_class in self._PROVIDERS_ORDER.items():
             provider: ProviderIntegrationBase = provider_class()
             try:
+                data = provider.process_payment(payment_data)
                 return {
                     "provider_name": provider_name,
-                    "provider_details": provider.process_payment(payment_data)
+                    "status": provider.get_status_from_response(data),
+                    "provider_details": data
                 }
             except Exception as e:
                 # Log the error or handle it as needed

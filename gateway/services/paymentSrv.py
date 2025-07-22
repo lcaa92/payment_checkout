@@ -12,7 +12,7 @@ def process_payment(payment_data: dict, payment: Payments, session: Session) -> 
 
     try:
         data = orchestrator.process_payment(payment_data)
-        payment.status = PaymentStatus.completed
+        payment.status = data.get("status")
         payment.provider = data.get("provider_name")
         payment.provider_id = data.get("provider_details", {}).get("id")
         payment.provider_details = json.dumps(data.get("provider_details", {}))

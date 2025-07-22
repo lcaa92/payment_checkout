@@ -2,6 +2,7 @@ import os
 import requests
 from .interfaces import ProviderIntegrationBase
 from fastapi import status
+from models import PaymentStatus
 
 class Provider2Integration(ProviderIntegrationBase):
 
@@ -46,3 +47,17 @@ class Provider2Integration(ProviderIntegrationBase):
         if response.status_code != status.HTTP_201_CREATED:
             raise Exception(f"Failed to process payment: {response.json()}")
         return response.json()
+
+    def get_status_from_response(self, response: dict) -> str:
+        """
+        Extract the payment status from the response.
+
+        :param response: Dictionary containing the response data.
+        :return: Payment status as a string.
+        """
+        status = {
+            "paid": PaymentStatus.completed,
+            "failed": PaymentStatus.failed,
+            "voided": PaymentStatus.cancelled,
+        }
+        return status.get(response.get("status"))
