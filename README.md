@@ -1,10 +1,10 @@
 # Payment Checlout
 
-## Python Virtual Environments: 
+## Python Virtual Environments:
 
 To develop all APIs, it was used uv[https://docs.astral.sh/uv/] to manage virtual environments. Each API has its own packages dependecies.
 
-## How to run 
+## How to run
 
 ### Starting services
 
@@ -37,10 +37,11 @@ docker compose down -v
 ToDo list:
 
 ### General
-- Pipeline CI/CD
+- [ ]Pipeline CI/CD
 
 ### Gateway
 - [X] Basic Structure
+- [X] Integration with providers
 - [ ] Linter
 - [ ] Tests
 
