@@ -36,6 +36,9 @@ docker compose down -v
 
 ToDo list:
 
+### General
+- Pipeline CI/CD
+
 ### Gateway
 - [X] Basic Structure
 - [ ] Linter
