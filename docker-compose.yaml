@@ -27,6 +27,23 @@ services:
     networks:
       - app_network
 
+  # FastAPI - Gateway
+  app3:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://user1:password123@db1:5432/gateway
+      # URLs for other apps for inter-service communication
+      APP1_URL: http://app1:8000
+      APP2_URL: http://app2:8000
+    depends_on:
+      - db1
+    networks:
+      - app_network
+
   # Single PostgreSQL Database for all apps
   db1:
     image: postgres:16-alpine
