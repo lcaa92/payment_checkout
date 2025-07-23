@@ -7,7 +7,7 @@ from sqlmodel.pool import StaticPool
 from main import app
 from core.database import get_session
 
-DATABASE_URL = os.getenv("DATABASE_URL") + '_test'
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:pwd@host/gateway") + '_test'
 
 
 @pytest.fixture(name="session")

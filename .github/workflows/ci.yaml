@@ -1,11 +1,5 @@
 name: CI
 
-on:
-  push:
-    branches: [ main, gateway_refacts ]
-  pull_request:
-    branches: [ main, gateway_refacts ]
-
 jobs:
   gateway:
     runs-on: ubuntu-latest
