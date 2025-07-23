@@ -46,6 +46,8 @@ ToDo list:
 - [ ] Tests
     - [X] Basic structure
     - [ ] Complete tests cases
+- [ ] Improve logs
+- [ ] Implement get payments route
 
 ### Provider 1
 - [X] Basic Structure
@@ -53,6 +55,7 @@ ToDo list:
 - [ ] Tests
     - [ ] Basic structure
     - [ ] Complete tests cases
+- [ ] Improve logs
 
 ### Provider 2
 - [X] Basic Structure
@@ -60,3 +63,4 @@ ToDo list:
 - [ ] Tests
     - [ ] Basic structure
     - [ ] Complete tests cases
+- [ ] Improve logs
