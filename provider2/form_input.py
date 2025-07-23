@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from models import PaymentMethodCurrency
+from models.transactions import PaymentMethodCurrency
 
 
 class CardDetails(BaseModel):

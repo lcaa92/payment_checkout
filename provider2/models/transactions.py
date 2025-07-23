@@ -41,9 +41,3 @@ class Transaction(SQLModel, table=True):
     amount: int = Field(..., ge=0)
     currency: PaymentMethodCurrency = Field(..., max_length=3, description="Currency must be a 3-letter ISO code")
     statement_descriptor: str = Field(..., max_length=255)
-
-
-class Void(SQLModel, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    amount: int = Field(..., ge=0)
-    transaction_id: uuid.UUID = Field(default=None, foreign_key="transaction.id")

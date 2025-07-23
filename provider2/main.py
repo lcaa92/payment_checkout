@@ -1,24 +1,10 @@
 import uuid
-import os
-from typing import Annotated
-from fastapi import FastAPI, status, Depends, HTTPException
+from fastapi import FastAPI, status, HTTPException
 from form_input import TransactionRequest, VoidRequest
-from models import Transaction, TransactionStatus, CardDetails
+from models.transactions import Transaction, TransactionStatus, CardDetails
 from responses import TransactionResponse, VoidResponse
-from sqlmodel import create_engine, Session, select
-from dotenv import load_dotenv
-
-load_dotenv()
-
-engine = create_engine(os.getenv("DATABASE_URL"))
-
-
-def get_session():
-    with Session(engine) as session:
-        yield session
-
-
-SessionDep = Annotated[Session, Depends(get_session)]
+from sqlmodel import select
+from core.database import SessionDep
 
 app = FastAPI()
 
