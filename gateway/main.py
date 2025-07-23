@@ -1,24 +1,13 @@
 import uuid
-import os
-from typing import Annotated
 from dotenv import load_dotenv
-from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi import FastAPI, status, HTTPException
 from form_input import PaymentRequest
 from responses import PaymentResponse
 from models.payments import Payments, PaymentStatus
 from services import paymentSrv
+from core.database import SessionDep
 
 load_dotenv()
-
-engine = create_engine(os.getenv("DATABASE_URL"))
-
-
-def get_session():
-    with Session(engine) as session:
-        yield session
-
-
-SessionDep = Annotated[Session, Depends(get_session)]
 
 app = FastAPI()
 
