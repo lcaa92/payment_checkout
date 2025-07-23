@@ -43,3 +43,23 @@ jobs:
 
       - name: Run tests
         run: uv run pytest tests
+
+  provider2:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: provider2
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Run linter
+        run: uv run flake8
+
+      # - name: Run tests
+      #   run: uv run pytest tests

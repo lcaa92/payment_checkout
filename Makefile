@@ -27,6 +27,12 @@ linter_provider2: # Run linter checks for the provider2 API.
 tests_gateway: # Run tests for the gateway API.
 	cd gateway && uv run pytest
 
+tests_provider1: # Run tests for the provider1 API.
+	cd gateway && uv run pytest
+
+tests_provider2: # Run tests for the provider2 API.
+	cd gateway && uv run pytest
+
 docker_compose_up: # Start all services using Docker Compose.
 	docker compose up -d
 
