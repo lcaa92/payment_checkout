@@ -1,7 +1,6 @@
 name: CI
 
-on: [push, pull_pull_request]
-    
+on: [push, pull_request]
  
 jobs:
   gateway:
