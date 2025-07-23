@@ -21,7 +21,7 @@ def test_charge_model():
     assert charge.currency == "USD"
 
 
-def test_payments_model_with_invalid_currency():
+def test_charge_model_with_invalid_currency():
     with pytest.raises(ValidationError):
         charge = Charge(
             id=uuid.uuid4(),

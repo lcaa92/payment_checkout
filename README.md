@@ -53,7 +53,7 @@ ToDo list:
 - [X] Basic Structure
 - [X] Linter
 - [ ] Tests
-    - [ ] Basic structure
+    - [X] Basic structure
     - [ ] Complete tests cases
 - [ ] Improve logs
 
@@ -61,6 +61,6 @@ ToDo list:
 - [X] Basic Structure
 - [X] Linter
 - [ ] Tests
-    - [ ] Basic structure
+    - [X] Basic structure
     - [ ] Complete tests cases
 - [ ] Improve logs
