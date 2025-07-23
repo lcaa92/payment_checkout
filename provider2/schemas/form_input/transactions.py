@@ -20,7 +20,3 @@ class TransactionRequest(BaseModel):
     statementDescriptor: str = Field(..., max_length=255)
     paymentType: str = Field(..., include=["card"], description="Payment type must be 'card' with card details")
     card: CardDetails = Field(..., description="Card details for the payment method")
-
-
-class VoidRequest(BaseModel):
-    amount: int = Field(..., ge=0, description="Amount must be a positive integer")

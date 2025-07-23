@@ -1,8 +1,10 @@
 import uuid
 from fastapi import FastAPI, status, HTTPException
-from form_input import TransactionRequest, VoidRequest
+from schemas.form_input.transactions import TransactionRequest
+from schemas.form_input.voids import VoidRequest
 from models.transactions import Transaction, TransactionStatus, CardDetails
-from responses import TransactionResponse, VoidResponse
+from schemas.responses.transactions import TransactionResponse
+from schemas.responses.voids import VoidResponse
 from sqlmodel import select
 from core.database import SessionDep
 
