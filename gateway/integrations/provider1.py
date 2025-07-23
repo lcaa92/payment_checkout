@@ -2,7 +2,7 @@ import os
 import requests
 from .interfaces import ProviderIntegrationBase
 from fastapi import status
-from models import PaymentStatus
+from models.payments import PaymentStatus
 
 
 class Provider1Integration(ProviderIntegrationBase):

@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, status, HTTPException
 from form_input import PaymentRequest
 from responses import PaymentResponse
-from models import Payments, PaymentStatus
-from sqlmodel import create_engine, Session
+from models.payments import Payments, PaymentStatus
 from services import paymentSrv
 
 load_dotenv()
