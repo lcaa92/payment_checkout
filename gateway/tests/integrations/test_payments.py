@@ -1,7 +1,10 @@
 import uuid
+import pytest
 from fastapi.testclient import TestClient
+from tests.conftest import check_db_connection
 
 
+@pytest.mark.skipif(not check_db_connection(), reason="Requires database connection")
 def test_create_transaction(client: TestClient):
     response = client.post(
         "/payments/", json={
@@ -26,6 +29,7 @@ def test_create_transaction(client: TestClient):
     assert isinstance(uuid.UUID(data["id"]), uuid.UUID)
 
 
+@pytest.mark.skipif(not check_db_connection(), reason="Requires database connection")
 def test_create_transaction_wrong_payment_type(client: TestClient):
     response = client.post(
         "/payments/", json={
