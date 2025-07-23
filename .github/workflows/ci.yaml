@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, gateway_refacts ]
+  pull_request:
+    branches: [ main, gateway_refacts ]
+
+jobs:
+  gateway:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gateway
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Run tests
+        run: uv run pytest tests
