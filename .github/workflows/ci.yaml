@@ -61,5 +61,5 @@ jobs:
       - name: Run linter
         run: uv run flake8
 
-      # - name: Run tests
-      #   run: uv run pytest tests
+      - name: Run tests
+        run: uv run pytest tests

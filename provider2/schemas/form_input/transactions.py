@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel, Field
 from models.transactions import PaymentMethodCurrency
 
@@ -14,9 +15,13 @@ class CardDetails(BaseModel):
     installmentNumber: int = Field(..., ge=1, le=12, description="installmentNumber must be between 1 and 12")
 
 
+class PaymentType(str, Enum):
+    card = "card"
+
+
 class TransactionRequest(BaseModel):
     amount: int = Field(..., ge=0, description="Amount must be a positive integer")
     currency: PaymentMethodCurrency = Field(..., max_length=3, description="Currency must be a 3-letter ISO code")
     statementDescriptor: str = Field(..., max_length=255)
-    paymentType: str = Field(..., include=["card"], description="Payment type must be 'card' with card details")
+    paymentType: PaymentType = Field(..., description="Payment type must be 'card' with card details")
     card: CardDetails = Field(..., description="Card details for the payment method")
