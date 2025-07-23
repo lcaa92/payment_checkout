@@ -28,3 +28,10 @@ CREATE TABLE carddetails(
     installment_number INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+/*
+Create a test database for the provider1 API
+This database is used for running tests without affecting the production data.
+Table will be created during the test setup.
+*/
+CREATE DATABASE provider2_test;
