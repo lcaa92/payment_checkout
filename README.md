@@ -44,13 +44,19 @@ ToDo list:
 - [X] Integration with providers
 - [X] Linter
 - [ ] Tests
+    - [X] Basic structure
+    - [ ] Complete tests cases
 
 ### Provider 1
 - [X] Basic Structure
 - [X] Linter
 - [ ] Tests
+    - [ ] Basic structure
+    - [ ] Complete tests cases
 
 ### Provider 2
 - [X] Basic Structure
 - [X] Linter
 - [ ] Tests
+    - [ ] Basic structure
+    - [ ] Complete tests cases
