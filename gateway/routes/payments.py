@@ -1,6 +1,6 @@
 import uuid
 from fastapi import APIRouter, status, HTTPException
-from responses import PaymentResponse
+from schemas.responses.responses import PaymentResponse
 from schemas.form_input.payment import PaymentRequest
 from models.payments import Payments, PaymentStatus
 from services import paymentSrv
