@@ -19,7 +19,7 @@ class PaymentStatus(str, Enum):
 
 class Payments(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    provider: str = Field(..., include=['provider1', 'provider2'], description="Payment provider name")
+    provider: str = Field(..., nullable=True, include=['provider1', 'provider2'], description="Payment provider name")
     amount: int = Field(..., ge=0, description="Amount in cents")
     status: PaymentStatus = Field(default=PaymentStatus.pending.value, description="Current status of the payment")
     currency: PaymentMethodCurrency = Field(..., description="Currency must be a 3-letter ISO code")
@@ -29,7 +29,7 @@ class Payments(SQLModel, table=True):
         alias="providerId"
     )
     provider_details: str = Field(nullable=True, description="Details specific to the payment provider")
-    created_at: str = Field(
+    created_at: datetime.datetime = Field(
         ...,
         default_factory=lambda: datetime.datetime.now(datetime.timezone.utc),
         description="Creation date in ISO 8601 format",

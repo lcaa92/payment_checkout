@@ -1,9 +1,14 @@
+from enum import Enum
 from pydantic import BaseModel, Field
-from models import PaymentMethodCurrency
+from models.payments import PaymentMethodCurrency
+
+
+class PaymentType(str, Enum):
+    card = "card"
 
 
 class PaymentInfo(BaseModel):
-    paymentType: str = Field(..., includes=["card"], description="Payment type must be 'card'")
+    paymentType: PaymentType = Field(..., description="Payment type must be 'card'")
     number: str = Field(..., min_length=16, max_length=16, description="Card number must be 16 digits")
     holderName: str = Field(..., max_length=100, description="Holder must be up to 100 characters")
     cvv: str = Field(pattern=r"^\d{3}$", description="CVV must be 3 or 4 digits")

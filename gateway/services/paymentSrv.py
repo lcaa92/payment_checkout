@@ -1,6 +1,6 @@
 import json
 from integrations.orchestrator import PaymentOrchestrator, PaymentProcessException
-from models import Payments, PaymentStatus
+from models.payments import Payments, PaymentStatus
 from sqlmodel import Session
 
 
