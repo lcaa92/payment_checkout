@@ -50,4 +50,5 @@ def test_create_transaction_wrong_payment_type(client: TestClient):
     data = response.json()
 
     assert response.status_code == 422
-    assert data["detail"][0]["msg"] == "Input should be 'card'"
+    assert isinstance(data['errors'], dict)
+    assert data['errors']['body.paymentInfo.paymentType'] == "Input should be 'card'"
