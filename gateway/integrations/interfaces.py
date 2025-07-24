@@ -32,3 +32,23 @@ class ProviderIntegrationBase(ABC):
         :return: Dictionary with the result of the payment processing.
         """
         raise NotImplementedError("This method should be overridden by subclasses.")
+
+    @abstractmethod
+    def _build_get_payment_reload(self, payment_data: dict) -> dict:
+        """
+        Build the payment request data structure.
+
+        :param payment_data: Dictionary containing payment details.
+        :return: Dictionary formatted for the payment provider.
+        """
+        raise NotImplementedError("This method should be overridden by subclasses.")
+
+    @abstractmethod
+    def get_payment_details(self, payment_data: dict) -> dict:
+        """
+        Process a payment with the given data.
+
+        :param payment_data: Dictionary containing payment details.
+        :return: Dictionary with the result of the payment processing.
+        """
+        raise NotImplementedError("This method should be overridden by subclasses.")

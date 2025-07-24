@@ -1,4 +1,5 @@
 from typing import Dict
+from models.payments import Payments
 from integrations.interfaces import ProviderIntegrationBase
 from .provider1 import Provider1Integration
 from .provider2 import Provider2Integration
@@ -45,3 +46,18 @@ class PaymentOrchestrator:
                 print(f"Error processing payment with {provider_name}: {e}")
 
         raise PaymentProcessException(errors, "All payment providers failed to process the payment.")
+
+    def get_payment_details(self, payment: Payments) -> dict:
+        """
+        Retrieve payment details from the orchestrator.
+
+        :param payment: Payment object containing the payment details.
+        :return: Dictionary with the payment details.
+        """
+        provider_name = payment.provider
+        if provider_name not in self._PROVIDERS_ORDER:
+            raise ValueError(f"Unknown provider: {provider_name}")
+
+        provider_class = self._PROVIDERS_ORDER[provider_name]
+        provider: ProviderIntegrationBase = provider_class()
+        return provider.get_payment_details(payment.model_dump())

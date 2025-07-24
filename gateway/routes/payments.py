@@ -44,10 +44,17 @@ def payment_detail(payment_id: uuid.UUID, session: SessionDep):
     if not payment:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Payment not found")
 
+    payment_details = {}
+    try:
+        payment_details = paymentSrv.get_payment_details(payment)
+    except Exception as e:
+        print(f"Error retrieving payment details: {e}")
+
     return PaymentResponse(
         id=payment.id,
         createdAt=payment.created_at.isoformat(),
         status=payment.status.value,
         amount=payment.amount,
-        currency=payment.currency.value
+        currency=payment.currency.value,
+        extra=payment_details
     )

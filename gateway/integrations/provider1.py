@@ -60,3 +60,28 @@ class Provider1Integration(ProviderIntegrationBase):
             "refunded": PaymentStatus.cancelled,
         }
         return status.get(response.get("status"))
+
+    def _build_get_payment_reload(self, payment_data: dict) -> dict:
+        """
+        Build the payment request data structure for reloading payment details.
+
+        :param payment_data: Dictionary containing payment details.
+        :return: Dictionary formatted for Provider 1.
+        """
+        return {
+            "id": payment_data.get("provider_id")
+        }
+
+    def get_payment_details(self, payment_data: dict) -> dict:
+        """
+        Retrieve payment details from Provider 1.
+
+        :param payment_data: Dictionary containing payment details.
+        :return: Dictionary with the payment details.
+        """
+        payload = self._build_get_payment_reload(payment_data)
+        response = requests.get(f"{self._BASE_URL}/charges/{payload['id']}")
+
+        if response.status_code != status.HTTP_200_OK:
+            raise Exception(f"Failed to retrieve payment details: {response.json()}")
+        return response.json()

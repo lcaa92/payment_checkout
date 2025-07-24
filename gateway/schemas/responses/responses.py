@@ -8,3 +8,4 @@ class PaymentResponse(BaseModel):
     status: str
     amount: int
     currency: str
+    extra: dict = None
