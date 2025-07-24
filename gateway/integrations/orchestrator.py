@@ -16,10 +16,14 @@ class PaymentProcessException(Exception):
 
 class PaymentOrchestrator:
 
-    _PROVIDERS_ORDER: Dict[str, ProviderIntegrationBase] = {
-        "provider1": Provider1Integration,
-        "provider2": Provider2Integration,
-    }
+    _PROVIDERS_ORDER: Dict[str, ProviderIntegrationBase] = {}
+
+    def __init__(self, providers: Dict[str, ProviderIntegrationBase] = {
+            'provider1': Provider1Integration,
+            'provider2': Provider2Integration
+        }
+    ):
+        self._PROVIDERS_ORDER = providers
 
     def process_payment(self, payment_data: dict) -> dict:
         """
