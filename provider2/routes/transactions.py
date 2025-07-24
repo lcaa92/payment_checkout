@@ -18,7 +18,6 @@ def transactions(input: TransactionRequest, session: SessionDep):
     transaction = Transaction(
         id=uuid.uuid4(),
         status=TransactionStatus.get_random_status(),
-        # status='paid',
         original_amount=input.amount,
         amount=input.amount,
         currency=input.currency,
@@ -42,7 +41,7 @@ def transactions(input: TransactionRequest, session: SessionDep):
 
     return TransactionResponse(
         id=transaction.id,
-        date=transaction.created_at.isoformat(),
+        date=transaction.created_at.strftime("%Y-%m-%d"),
         status=transaction.status,
         originalAmount=transaction.original_amount,
         amount=transaction.amount,
@@ -61,7 +60,7 @@ def transaction_detail(transaction_id: str, session: SessionDep):
     card_details = session.exec(select(CardDetails).where(CardDetails.transaction_id == transaction.id)).first()
     return TransactionResponse(
         id=transaction.id,
-        date=transaction.created_at.isoformat(),
+        date=transaction.created_at.strftime("%Y-%m-%d"),
         status=transaction.status,
         originalAmount=transaction.original_amount,
         amount=transaction.amount,

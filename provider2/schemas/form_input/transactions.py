@@ -1,10 +1,10 @@
 from enum import Enum
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from models.transactions import PaymentMethodCurrency
 
 
 class CardDetails(BaseModel):
-    number: str = Field(..., min_length=16, max_length=16, description="Card number must be 16 digits")
+    number: str = Field(..., pattern=r"^\d{16}$", description="Card number must be 16 digits")
     holder: str = Field(..., max_length=100, description="Holder must be up to 100 characters")
     cvv: str = Field(pattern=r"^\d{3}$", description="CVV must be 3 or 4 digits")
     expiration: str = Field(
@@ -13,6 +13,20 @@ class CardDetails(BaseModel):
         description="Expiration date must be in MM/YY format"
     )
     installmentNumber: int = Field(..., ge=1, le=12, description="installmentNumber must be between 1 and 12")
+
+    @field_validator("number", mode="before")
+    @classmethod
+    def validate_card_number(cls, v: str) -> str:
+        if not v.isdigit() or len(v) != 16:
+            raise ValueError("Card number must be a 16 digit number")
+        return v
+
+    @field_validator("cvv", mode="before")
+    @classmethod
+    def validate_cvv(cls, v: str) -> str:
+        if not v.isdigit() or len(v) not in [3, 4]:
+            raise ValueError("CVV must be a 3 or 4 digit number")
+        return v
 
 
 class PaymentType(str, Enum):

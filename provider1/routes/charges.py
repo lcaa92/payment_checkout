@@ -51,7 +51,7 @@ def charges(input: ChargeRequest, session: SessionDep):
 
     return ChargeResponse(
         id=charge.id,
-        createdAt=charge.created_at.isoformat(),
+        createdAt=charge.created_at.strftime("%Y-%m-%d"),
         status=charge.status,
         originalAmount=charge.original_amount,
         currentAmount=charge.current_amount,
@@ -73,7 +73,7 @@ def charges_detail(charge_id: str, session: SessionDep):
 
     return ChargeResponse(
         id=charge.id,
-        createdAt=charge.created_at.isoformat(),
+        createdAt=charge.created_at.strftime("%Y-%m-%d"),
         status=charge.status,
         originalAmount=charge.original_amount,
         currentAmount=charge.current_amount,

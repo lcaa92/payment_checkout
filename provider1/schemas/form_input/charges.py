@@ -3,9 +3,9 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class CardDetails(BaseModel):
-    number: str = Field(..., min_length=16, max_length=16, description="Card number must be 16 digits")
+    number: str = Field(..., pattern=r"^\d{16}$", description="Card number must be 16 digits")
     holderName: str = Field(..., max_length=100, description="Holder name must be up to 100 characters")
-    cvv: str = Field(pattern=r"^[0-9]{3, 4}$", description="CVV must be 3 or 4 digits")
+    cvv: str = Field(pattern=r"^\d{3}$", description="CVV must be 3 or 4 digits")
     expirationDate: str = Field(
         ...,
         pattern=r"^(0[1-9]|1[0-2])/\d{4}$",
