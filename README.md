@@ -3,13 +3,12 @@
 This repo contains 3 differents projects to simulate an payment orchestrator with 2 payments providers
 
 ## Services / Directories / Files:
-.
-├── db_init -- directory with SQL scripts to start database
-├── gateway -- payment orchestrator source code
-├── provider1 -- mock payment provider 1 source code
-├── provider2 -- mock payment provider 2 source code
-├── Makefile -- some commands to help manage projects
-├── docker-compose.yaml -- config to run services (including DB) on docker
+- db_init -- directory with SQL scripts to start database
+- gateway -- payment orchestrator source code
+- provider1 -- mock payment provider 1 source code
+- provider2 -- mock payment provider 2 source code
+- Makefile -- some commands to help manage projects
+- docker-compose.yaml -- config to run services (including DB) on docker
 
 ## Python Virtual Environments:
 
