@@ -1,6 +1,6 @@
 # Payment Checkout
 
-This repo contains 3 differents projects to simulate an payment orchestrator with 2 payments providers
+This repo contains 3 differents projects to simulate an payment orchestrator with 2 payments providers. All project using Python + FastAPI
 
 ## Services / Directories / Files:
 - db_init -- directory with SQL scripts to start database
