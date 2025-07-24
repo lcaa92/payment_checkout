@@ -1,4 +1,5 @@
 from typing import Dict
+from core.log import logger
 from models.payments import Payments
 from integrations.interfaces import ProviderIntegrationBase
 from .provider1 import Provider1Integration
@@ -38,12 +39,14 @@ class PaymentOrchestrator:
                     "provider_details": data
                 }
             except Exception as e:
-                # Log the error or handle it as needed
                 errors.append({
                     "provider": provider_name,
                     "error": str(e)
                 })
-                print(f"Error processing payment with {provider_name}: {e}")
+                logger.error(f"Error processing payment with {provider_name}: {e}", extra={
+                    "provider": provider,
+                    "error": str(e)
+                })
 
         raise PaymentProcessException(errors, "All payment providers failed to process the payment.")
 

@@ -5,6 +5,7 @@ from schemas.form_input.payment import PaymentRequest
 from models.payments import Payments, PaymentStatus
 from services import paymentSrv
 from core.database import SessionDep
+from core.log import logger
 
 router = APIRouter(
     tags=["Payments"],
@@ -48,7 +49,10 @@ def payment_detail(payment_id: uuid.UUID, session: SessionDep):
     try:
         payment_details = paymentSrv.get_payment_details(payment)
     except Exception as e:
-        print(f"Error retrieving payment details: {e}")
+        logger.error(f"Error retrieving payment details: {e}", extra={
+            "provider": payment.provider,
+            "error": str(e)
+        })
 
     return PaymentResponse(
         id=payment.id,
