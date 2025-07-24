@@ -12,7 +12,7 @@ This repo contains 3 differents projects to simulate an payment orchestrator wit
 
 ## Python Virtual Environments:
 
-To develop all APIs, it was used uv[https://docs.astral.sh/uv/] to manage virtual environments. Each API has its own packages dependecies.
+To develop all APIs, it was used [uv](https://docs.astral.sh/uv/) to manage virtual environments. Each API has its own packages dependecies.
 
 ## How to run
 
