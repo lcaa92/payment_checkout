@@ -1,3 +1,4 @@
+import uuid
 import pytest
 from integrations.orchestrator import PaymentOrchestrator, PaymentProcessException
 
@@ -45,7 +46,9 @@ def test_get_payment_details_success():
             return {"status": "authorized"}
 
     class DummyPayment:
+        id = uuid.uuid4()
         provider = "dummy"
+        provider_id = uuid.uuid4()
 
         def model_dump(self):
             return {"provider_id": "abc123"}

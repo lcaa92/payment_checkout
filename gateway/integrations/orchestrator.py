@@ -29,6 +29,9 @@ class PaymentOrchestrator:
         """
         Process a payment with the given data.
 
+        The logic for process the payment is in order of _PROVIDERS_ORDER.
+        When one provider process the payment, the others will not be attempted
+
         :param payment_data: Dictionary containing payment details.
         :return: Dictionary with the result of the payment processing.
         """
@@ -63,8 +66,14 @@ class PaymentOrchestrator:
         """
         provider_name = payment.provider
         if provider_name not in self._PROVIDERS_ORDER:
+            logger.warning(f"Not possible get payment details. Unknown provider: {provider_name}")
             raise ValueError(f"Unknown provider: {provider_name}")
 
         provider_class = self._PROVIDERS_ORDER[provider_name]
         provider: ProviderIntegrationBase = provider_class()
+        logger.debug('get payment details successed', exc_info={
+            'provider': provider_name,
+            'payment_id': payment.id,
+            'provider_id': payment.provider_id
+        })
         return provider.get_payment_details(payment.model_dump())

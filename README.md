@@ -54,11 +54,10 @@ ToDo list:
 - [X] Basic Structure
 - [X] Integration with providers
 - [X] Linter
-- [ ] Tests
-    - [X] Basic structure
-    - [ ] Complete tests cases
-- [ ] Improve logs
-- [ ] Implement get payments route
+- [X] Tests
+- [X] Logs
+- [X] Implement get payments route
+- [ ] Implement Refund route
 
 ### Provider 1
 - [X] Basic Structure
