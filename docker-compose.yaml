@@ -37,8 +37,8 @@ services:
     environment:
       DATABASE_URL: postgresql://user1:password123@db1:5432/gateway
       # URLs for other apps for inter-service communication
-      APP1_URL: http://app1:8000
-      APP2_URL: http://app2:8000
+      PROVIDER1_URL: http://provider1:8000
+      PROVIDER2_URL: http://provider2:8000
     depends_on:
       - db1
     networks:
@@ -47,7 +47,7 @@ services:
   # Single PostgreSQL Database for all apps
   db1:
     image: postgres:16-alpine
-    restart: always 
+    restart: always
     environment:
       POSTGRES_DB: db1
       POSTGRES_USER: user1
